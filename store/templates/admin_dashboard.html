@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container animate-up" style="max-width: 1200px; padding: 3rem 5%;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="color: var(--secondary);">Store Overview</h1>
+        <!-- Link to Django's built-in Add Product page -->
+        <a href="/admin/store/product/add/" class="nav-btn" target="_blank">
+            <i class="fas fa-plus"></i> Add New Medicine
+        </a>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="grid-4" style="grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 3rem;">
+        <div class="card" style="border-left: 5px solid var(--primary);">
+            <h3 style="color: #64748B; font-size: 1rem; margin-bottom: 10px;">Total Revenue</h3>
+            <p style="font-size: 2.5rem; font-weight: 700; color: var(--secondary);">GHS {{ total_revenue }}</p>
+        </div>
+        <div class="card" style="border-left: 5px solid var(--accent);">
+            <h3 style="color: #64748B; font-size: 1rem; margin-bottom: 10px;">Total Sales (Orders)</h3>
+            <p style="font-size: 2.5rem; font-weight: 700; color: var(--secondary);">{{ total_sales }}</p>
+        </div>
+        <div class="card" style="border-left: 5px solid #3B82F6;">
+            <h3 style="color: #64748B; font-size: 1rem; margin-bottom: 10px;">Products in Store</h3>
+            <p style="font-size: 2.5rem; font-weight: 700; color: var(--secondary);">{{ products|length }}</p>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+        
+        <!-- RECENT SALES TABLE -->
+        <div class="card">
+            <h3 style="margin-bottom: 1.5rem; color: var(--primary-dark);">Recent Sales</h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #E2E8F0; text-align: left;">
+                            <th style="padding: 10px;">Customer</th>
+                            <th style="padding: 10px;">Method</th>
+                            <th style="padding: 10px;">Amount</th>
+                            <th style="padding: 10px;">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% comment %} {% for order in recent_orders %} {% endcomment %}
+                        <tr style="border-bottom: 1px solid #F1F5F9;">
+                            <td style="padding: 15px 10px;">{{ order.user.username }}</td>
+                            <td style="padding: 15px 10px;"><span class="tag" style="position: static;">{{ order.payment_method }}</span></td>
+                            <td style="padding: 15px 10px; font-weight: 600;">GHS {{ order.total_amount }}</td>
+                            <td style="padding: 15px 10px; color: #64748B; font-size: 0.85rem;">{{ order.created_at|date:"M d, H:i" }}</td>
+                        </tr>
+                        {% comment %} {% empty %} {% endcomment %}
+                        <tr><td colspan="4" style="padding: 20px; text-align: center; color: #94A3B8;">No sales yet.</td></tr>
+                        {% comment %} {% endfor %} {% endcomment %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MANAGE PRODUCTS TABLE -->
+        <div class="card">
+            <h3 style="margin-bottom: 1.5rem; color: var(--primary-dark);">Manage Inventory</h3>
+            <div style="overflow-x: auto; max-height: 400px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #E2E8F0; text-align: left;">
+                            <th style="padding: 10px;">Medicine</th>
+                            <th style="padding: 10px;">Price (GHS)</th>
+                            <th style="padding: 10px; text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr style="border-bottom: 1px solid #F1F5F9;">
+                            <td style="padding: 15px 10px; font-weight: 600;">{{ product.name }}</td>
+                            <td style="padding: 15px 10px; color: var(--primary-dark);">{{ product.price }}</td>
+                            <td style="padding: 15px 10px; text-align: right;">
+                                <!-- Link directly to Django's secure edit/delete view -->
+                                <a href="/admin/store/product/{{ product.id }}/change/" class="btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" target="_blank">
+                                    Edit / Remove
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

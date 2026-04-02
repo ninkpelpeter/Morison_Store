@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <i class="fas fa-capsules fa-3x" style="color: var(--primary);"></i>
+            <h2 style="margin-top: 1rem;">Welcome Back</h2>
+            <p style="color: #64748b;">Secure access to your health portal</p>
+        </div>
+    
+            <!-- Inside login.html -->
+<form method="POST" action="{% url 'login' %}">
+    {% csrf_token %} <!-- MANDATORY FOR SECURITY -->
+    
+    <!-- Render Django's Secure Form Fields -->
+    {% for field in form %}
+        <div class="input-group">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <small style="color: red; font-size: 0.8rem;">{{ field.errors.0 }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn-full" style="margin-top: 1rem;">Sign In</button>
+    
+    <p style="text-align: center; margin-top: 1.5rem; color: #64748b;">
+        New to NamubiRx? <a href="{% url 'signup' %}" style="color: var(--primary); font-weight: 700;">Create Account</a>
+    </p>
+</form>
+    </div>
+</div>
+{% endblock %}

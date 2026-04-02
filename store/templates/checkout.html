@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container animate-up">
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem;">
+            <!-- LEFT: Payment Methods -->
+<!-- LEFT: Payment Methods -->
+<div>
+    <h2 style="margin-bottom: 2rem;">Secure Checkout</h2>
+    
+    <!-- THE FORM TAG MUST BE HERE -->
+    <!-- Inside templates/checkout.html, replace the form area -->
+<form action="{% url 'process_payment' %}" method="POST">
+    {% csrf_token %}
+    
+    <!-- THIS HIDDEN FIELD TELLS THE BACKEND WHICH METHOD IS ACTIVE -->
+    <input type="hidden" name="payment_type" id="payment_type" value="momo">
+    
+    <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow);">
+        
+        <!-- Payment Tabs -->
+        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+            <button type="button" id="btn-momo" class="nav-btn" style="flex: 1;" onclick="showPayment('momo')">
+                <i class="fas fa-mobile-alt"></i> Mobile Money
+            </button>
+            <button type="button" id="btn-card" class="btn-outline" style="flex: 1;" onclick="showPayment('card')">
+                <i class="fas fa-credit-card"></i> Card
+            </button>
+        </div>
+
+        <!-- MoMo Form -->
+        <div id="momo-form">
+            <h3 style="margin-bottom: 1rem; color: var(--primary-dark);">Mobile Money Details</h3>
+            <div class="input-group">
+                <label>Network Provider</label>
+                <select name="network" class="form-input">
+                    <option value="mtn">MTN Mobile Money</option>
+                    <option value="telecel">Telecel Cash</option>
+                    <option value="at">AT Money</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Mobile Number</label>
+                <input type="tel" name="phone" placeholder="024 123 4567" class="form-input">
+            </div>
+            <p style="font-size: 0.9rem; color: #64748b; background: #ecfdf5; padding: 15px; border-radius: 8px; border: 1px solid var(--primary);">
+                <i class="fas fa-info-circle"></i> You will receive a prompt on your phone to authorize payment.
+            </p>
+        </div>
+
+        <!-- Card Form (Hidden by default) -->
+        <div id="card-form" style="display:none;">
+            <h3 style="margin-bottom: 1rem; color: var(--primary-dark);">Card Details</h3>
+            <div class="input-group">
+                <label>Card Number</label>
+                <input type="text" name="card_number" placeholder="0000 0000 0000 0000" class="form-input">
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <div class="input-group">
+                    <label>Expiry (MM/YY)</label>
+                    <input type="text" name="expiry" placeholder="12/28" class="form-input">
+                </div>
+                <div class="input-group">
+                    <label>CVV</label>
+                    <input type="password" name="cvv" placeholder="123" class="form-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button type="submit" class="btn-full" style="margin-top: 2rem; background: var(--secondary);">Securely Pay GHS {{ final_total }}</button>
+</form>
+
+<!-- ADD THIS SCRIPT TO HANDLE THE TOGGLE AND HIDDEN INPUT -->
+<script>
+    function showPayment(type) {
+        // Update the hidden input so Django knows what to validate
+        document.getElementById('payment_type').value = type;
+
+        if(type === 'momo') {
+            document.getElementById('momo-form').style.display = 'block';
+            document.getElementById('card-form').style.display = 'none';
+            document.getElementById('btn-momo').className = "nav-btn";
+            document.getElementById('btn-card').className = "btn-outline";
+        } else {
+            document.getElementById('momo-form').style.display = 'none';
+            document.getElementById('card-form').style.display = 'block';
+            document.getElementById('btn-momo').className = "btn-outline";
+            document.getElementById('btn-card').className = "nav-btn";
+        }
+    }
+</script>
+</div>
+
+        <!-- RIGHT: Order Summary (Dynamic) -->
+        <div class="card" style="height: fit-content;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>Your Cart</h3>
+                <a href="{% url 'clear_cart' %}" style="font-size: 0.8rem; color: red;">Clear Cart</a>
+            </div>
+
+            <div style="margin-top: 1.5rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+                
+                <!-- Loop through added items -->
+                {% for item in cart_items %}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <div>
+                        <span style="font-weight: 600;">{{ item.product.name }}</span>
+                        <div style="font-size: 0.8rem; color: #666;">Qty: {{ item.quantity }}</div>
+                    </div>
+                    <strong>GHS {{ item.total_price }}</strong>
+                </div>
+                {% empty %}
+                <p style="text-align: center; color: #999;">Your cart is empty.</p>
+                {% endfor %}
+
+                <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
+
+                <!-- Totals -->
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Subtotal</span>
+                    <strong>GHS {{ grand_total }}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Delivery Fee</span>
+                    <strong>GHS {{ delivery_fee }}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 1.2rem; margin-top: 1rem; color: var(--primary-dark); font-weight: 700;">
+                    <span>Total</span>
+                    <span>GHS {{ final_total }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showPayment(type) {
+        if(type === 'momo') {
+            document.getElementById('momo-form').style.display = 'block';
+            document.getElementById('card-form').style.display = 'none';
+        } else {
+            document.getElementById('momo-form').style.display = 'none';
+            document.getElementById('card-form').style.display = 'block';
+        }
+    }
+</script>
+{% endblock %}

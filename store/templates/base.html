@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NamubiRx | Digital Pharmacy</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="animate-up">
+        <a href="{% url 'home' %}" class="logo">
+        <i class="fas fa-capsules" style="color: var(--primary);"></i> NamubiRx</a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'shop' %}">Shop Medicines</a>
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'checkout' %}" class="cart-wrapper" style="margin-right: 15px;">
+            <i class="fas fa-shopping-cart fa-lg"></i>
+            {% if cart_count > 0 %}
+                <span class="cart-badge">{{ cart_count }}</span>
+            {% endif %}
+        </a>
+        
+        
+        <!-- DYNAMIC AUTHENTICATION UI -->
+{% if user.is_authenticated %}
+    <span style="font-weight: 600; color: var(--primary-dark); margin-right: 10px;">Hi, {{ user.username }}</span>
+    
+    <!-- ONLY SHOW THIS BUTTON IF USER IS ADMIN -->
+    {% if user.is_staff %}
+        <a href="{% url 'admin_dashboard' %}" class="btn-outline" style="margin-right: 10px; padding: 8px 15px;">Dashboard</a>
+    {% endif %}
+
+    <a href="{% url 'logout' %}" class="nav-btn" style="background: #ef4444;">Log Out</a>
+{% else %}
+    <a href="{% url 'login' %}" class="nav-btn">Sign In</a>
+{% endif %}
+        </div>
+    </nav>
+    <!-- SECURITY & NOTIFICATION MESSAGES -->
+{% if messages %}
+    <div style="padding: 10px 5%; position: absolute; width: 100%; z-index: 9999;">
+        {% for message in messages %}
+            <div style="padding: 15px; border-radius: 8px; margin-bottom: 10px; color: white; font-weight: 600; text-align: center; background-color: {% if message.tags == 'error' %}#ef4444{% elif message.tags == 'success' %}#10B981{% else %}#F59E0B{% endif %}; box-shadow: var(--shadow);">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h2 style="margin-bottom: 1rem;">NamubiRx</h2>
+                <p style="color: #94a3b8; line-height: 1.6;">Your trusted partner for health and wellness. Order medicines securely and get them delivered to your doorstep in Ghana.</p>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <a href="{% url 'shop' %}" class="footer-link">Browse Medicines</a>
+                <a href="{% url 'signup' %}" class="footer-link">Create Account</a>
+                <a href="{% url 'checkout' %}" class="footer-link">Track Order</a>
+            </div>
+            <div>
+                <h3>Contact</h3>
+                <p class="footer-link"><i class="fas fa-phone"></i> +233 54 123 4567</p>
+                <p class="footer-link"><i class="fas fa-envelope"></i> help@namubirx.com</p>
+                <p class="footer-link"><i class="fas fa-map-marker-alt"></i> Accra, Ghana</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #334155; color: #64748b;">
+            &copy; 2026 NamubiRx. Built for Ghana.
+        </div>
+    </footer>
+
+</body>
+</html>

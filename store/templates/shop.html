@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container animate-up">
+    <h1 class="section-title">Shop Medicines</h1>
+    
+    <!-- Categories -->
+    <div style="display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 2rem; justify-content: center;">
+        <button class="nav-btn">All</button>
+        <button class="btn-outline" style="width: auto; padding: 10px 25px;">Malaria</button>
+        <button class="btn-outline" style="width: auto; padding: 10px 25px;">Pain Relief</button>
+        <button class="btn-outline" style="width: auto; padding: 10px 25px;">Sexual Health</button>
+        <button class="btn-outline" style="width: auto; padding: 10px 25px;">Antibiotics</button>
+    </div>
+
+    <div class="grid-4">
+    {% for product in products %}
+    <div class="card">
+        <!-- Check if image exists, otherwise show placeholder -->
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <img src="https://via.placeholder.com/300" alt="No Image">
+        {% endif %}
+        
+        <h3>{{ product.name }}</h3>
+        <span class="price">GHS {{ product.price }}</span>
+        <p style="font-size: 0.9rem; color: #666;">{{ product.category }}</p>
+        
+            <a href="{% url 'add_to_cart' product.id %}" class="btn-outline" style="display: block; text-align: center; margin-top: 10px;">
+            <i class="fas fa-cart-plus"></i> Add to Cart
+        </a>
+    </div>
+    {% endfor %}
+</div>
+</div>
+{% endblock %}

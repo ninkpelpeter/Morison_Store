@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-container" style="background-image: url('NamubiRx_shop\media\medicines\christine.jpg');">
+    <div class="auth-box">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="margin-top: 1rem;">Create Account</h2>
+            <p style="color: #64748b;">Join 10,000+ healthy Ghanaians</p>
+        </div>
+        <!-- Inside signup.html -->
+<form method="POST" action="{% url 'signup' %}">
+    {% csrf_token %} <!-- MANDATORY FOR SECURITY -->
+
+    <!-- Render Django's Secure Form Fields -->
+    {% for field in form %}
+        <div class="input-group">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <small style="color: red; font-size: 0.8rem;">{{ field.errors.0 }}</small>
+            {% endif %}
+            {% if field.help_text %}
+                <small style="color: #94a3b8; font-size: 0.75rem; display: block; margin-top: 4px;">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn-full" style="margin-top: 1rem;">Create Secure Account</button>
+    
+    <p style="text-align: center; margin-top: 1.5rem; color: #64748b;">
+        Already have an account? <a href="{% url 'login' %}" style="color: var(--primary); font-weight: 700;">Login</a>
+    </p>
+</form>
+    </div>
+</div>
+{% endblock %}
