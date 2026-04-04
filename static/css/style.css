@@ -78,7 +78,6 @@ nav {
 /* --- FORMS (Login/Signup/Contact) --- */
 .auth-container {
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: url('NamubiRx_shop\media\medicines\pina.jpg') center/cover;
 }
 .auth-box {
     background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px);
