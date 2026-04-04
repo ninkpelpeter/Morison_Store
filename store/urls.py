@@ -1,29 +1,30 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
-from django.conf.urls.static import static
-from store import views
+from django.views.static import serve
+from store import views 
 
-urlpatterns = [
+urlpatterns =[
     path('admin/', admin.site.urls),
-    # --- Main Pages ---
     path('', views.home, name='home'),
     path('shop/', views.shop, name='shop'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    # --- Authentication ---
     path('signup/', views.signup, name='signup'),
     path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'), # Ensure logout is here
     
-    # --- Cart Logic ---
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('clear-cart/', views.clear_cart, name='clear_cart'),
-    
-    # --- Checkout & Payment (THIS WAS MISSING) ---
     path('checkout/', views.checkout, name='checkout'),
-    path('process-payment/', views.process_payment, name='process_payment'), # <--- This line fixes your error
+    path('process-payment/', views.process_payment, name='process_payment'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]
 
-# Serve images
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# --- THIS IS THE MAGIC FIX FOR PRODUCTION IMAGES ---
+# This forces Django to serve uploaded images on Render
+urlpatterns +=[
+    re_path(r'^media/(?P<path>.*)$', serve, {
+        'document_root': settings.MEDIA_ROOT,
+    }),
+]

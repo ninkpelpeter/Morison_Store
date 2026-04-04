@@ -1,12 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product
-from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Product
 from django.contrib.admin.views.decorators import staff_member_required # NEW
 from django.contrib import messages
 from django.db.models import Sum # NEW
