@@ -12,7 +12,7 @@
         </div>
         <div style="margin-top: 2rem; display: flex; gap: 1.5rem; color: #64748b;">
             <span><i class="fas fa-shield-alt" style="color: var(--primary);"></i> 100% Genuine</span>
-            <span><i class="fas fa-shipping-fast" style="color: var(--primary);"></i> 24h Delivery</span>
+            <span><i class="fas fa-shipping-fast" style="color: var(--primary);"></i> 24h Delivery in Kpandai</span>
         </div>
     </div>
     <div class="hero-img animate-up delay-2 animate-float">
@@ -43,5 +43,30 @@
     <p style="text-align: center;">No products added in Admin panel yet.</p>
     {% endfor %}
 </div>
+</section>
+
+<!-- Meet the Founder Section -->
+<section class="container" style="padding: 4rem 5%; background: white; margin-bottom: 4rem; border-radius: 20px; box-shadow: var(--shadow);">
+    <div class="grid-3" style="grid-template-columns: 1fr 2fr; align-items: center; gap: 3rem;">
+        <div style="text-align: center;">
+            <div style="position: relative; display: inline-block;">
+                <!-- Morison's Profile Photo -->
+                <img src="{% static 'images/morison.jpg' %}" alt="Morison" style="width: 250px; height: 250px; object-fit: cover; border-radius: 50%; border: 5px solid var(--light); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);">
+                <!-- Verified Badge -->
+                <div style="position: absolute; bottom: 15px; right: 15px; background: var(--primary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white;">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 style="font-size: 2rem; margin-bottom: 1rem; color: var(--secondary);">A message from our Founder</h2>
+            <i class="fas fa-quote-left" style="font-size: 2rem; color: #cbd5e1; margin-bottom: 1rem; display: block;"></i>
+            <p style="font-size: 1.15rem; color: #475569; line-height: 1.8; font-style: italic; margin-bottom: 1.5rem;">
+                "At MorisonRx, your health is our ultimate priority. I started this platform to ensure that no one in Ghana has to struggle to find the exact, authentic medications they need. We are committed to delivering care with speed, privacy, and absolute professionalism within Kpandai."
+            </p>
+            <h4 style="font-size: 1.3rem; color: var(--primary-dark);">Morison</h4>
+            <p style="color: var(--accent); font-weight: 600;">Lead Pharmacist & CEO</p>
+        </div>
+    </div>
 </section>
 {% endblock %}
