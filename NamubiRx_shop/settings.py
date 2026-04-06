@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
+    'cloudinary_storage',
     
     'store',
 ]
@@ -120,7 +122,12 @@ USE_I18N = True
 USE_TZ = True
 
 
-
+# --- CLOUDINARY CLOUD STORAGE SETTINGS ---
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dbqa7wxtq',
+    'API_KEY': '733812289624898',
+    'API_SECRET': '2S6gHZdUC9zhWdBQxTl3QMAEqE4',
+}
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
@@ -128,13 +135,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # New Django 5.0/6.0 way to configure WhiteNoise
 STORAGES = {
+    # This sends uploaded images (like medicines) to Cloudinary forever
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
+    # This handles your CSS and design
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+# (You can leave MEDIA_ROOT as it is, Cloudinary will override it)
