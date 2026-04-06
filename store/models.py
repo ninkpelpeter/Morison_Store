@@ -8,6 +8,7 @@ class Product(models.Model):
         ('Supplements', 'Supplements'),
         ('First Aid', 'First Aid'),
         ('Malaria', 'Malaria'),
+        ('Sexual Health', 'Sexual Health'),
     )
 
     name = models.CharField(max_length=200)

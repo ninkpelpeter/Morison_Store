@@ -49,6 +49,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# --- SECURITY & REDIRECTS ---
+LOGIN_URL = '/login/'           # Forces Django to use our custom login URL
+# LOGIN_REDIRECT_URL = '/shop/'   # Sends user to shop after successful login
+# LOGOUT_REDIRECT_URL = '/'       # Sends user to home after logging out
 # Redirects
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'

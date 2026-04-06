@@ -13,8 +13,25 @@ def home(request):
     return render(request, 'index.html', context)
 
 def shop(request):
+    # 1. Get the category from the URL (if clicked)
+    category = request.GET.get('category')
+    
+    # 2. Get all products first
     products = Product.objects.all()
-    return render(request, 'shop.html', {'products': products})
+    
+    # 3. If a specific category was clicked, filter the products!
+    if category and category != 'All':
+        products = products.filter(category=category)
+        
+    # 4. Get a list of all unique categories currently in the database to generate the buttons
+    categories = Product.objects.values_list('category', flat=True).distinct()
+    
+    context = {
+        'products': products,
+        'current_category': category or 'All',  # Tells the HTML which button should be highlighted
+        'categories': categories
+    }
+    return render(request, 'shop.html', context)
 
 def about(request):
     return render(request, 'about.html')

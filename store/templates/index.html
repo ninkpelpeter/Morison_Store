@@ -1,72 +1,165 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<section class="hero">
-    <div class="hero-text animate-up">
-        <span style="color: var(--primary); font-weight: 700; letter-spacing: 1px;">HEALTHCARE SIMPLIFIED</span>
-        <h1>Your Pharmacy,<br> <span style="color: var(--primary);">Delivered.</span></h1>
-        <p>Skip the queue. Order prescriptions, OTC medicines, and health products from the comfort of your home. Fast delivery within Kpandai & Wulensi.</p>
-        <div style="display: flex; gap: 1rem; justify-content: flex-start;">
-            <a href="{% url 'shop' %}" class="nav-btn">Shop Now</a>
-            <a href="{% url 'about' %}" class="btn-outline" style="width: auto; padding: 10px 25px;">Learn More</a>
-        </div>
-        <div style="margin-top: 2rem; display: flex; gap: 1.5rem; color: #64748b;">
-            <span><i class="fas fa-shield-alt" style="color: var(--primary);"></i> 100% Genuine</span>
-            <span><i class="fas fa-shipping-fast" style="color: var(--primary);"></i> 24h Delivery in Kpandai</span>
-        </div>
-    </div>
-    <div class="hero-img animate-up delay-2 animate-float">
-        <!-- High quality pharmacist image -->        <img src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&q=80" alt="Pharmacist">
-    </div>
-</section>
+<style>
+    /* Custom animations specifically for the homepage */
+    .medical-hero {
+        background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+        padding: 6rem 5% 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero-badge {
+        background: white; padding: 10px 20px; border-radius: 50px; 
+        box-shadow: var(--shadow); display: inline-flex; align-items: center; gap: 10px;
+        font-weight: 600; color: var(--primary-dark); margin-bottom: 1.5rem;
+    }
+    .category-card {
+        background: white; padding: 1.5rem; border-radius: 16px; text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.3s; border: 1px solid #f1f5f9;
+        cursor: pointer;
+    }
+    .category-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow); }
+    .category-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+    
+    .promo-banner {
+        background: var(--secondary); color: white; border-radius: 24px;
+        padding: 3rem 5%; margin: 4rem 5%; display: flex; align-items: center; justify-content: space-between;
+        position: relative; overflow: hidden;
+    }
+</style>
 
-<section class="container">
-    <h2 class="section-title animate-up">Best Selling Essentials</h2>
-    <<div class="grid-4">
-    <!-- Make sure this says 'featured_products' not 'recent_jobs' or just 'products' -->
-    {% for product in featured_products %}
-    <div class="card animate-up delay-1">
-        <span class="tag">Sale</span>
+<!-- HERO SECTION -->
+<header class="medical-hero">
+    <div class="container" style="padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
         
-        <!-- Image Handling -->
-        {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        {% else %}
-            <img src="https://via.placeholder.com/300" alt="No Image">
-        {% endif %}
+        <div class="animate-up">
+            <div class="hero-badge">
+                <i class="fas fa-motorcycle" style="color: var(--accent);"></i> 
+                Fast Delivery in Ghana
+            </div>
+            <h1 style="font-size: 3.5rem; line-height: 1.2; margin-bottom: 1.5rem; color: var(--secondary);">
+                Your Digital <br><span style="color: var(--primary);">Pharmacy</span>
+            </h1>
+            <p style="font-size: 1.1rem; color: #64748B; margin-bottom: 2.5rem; line-height: 1.7;">
+                Order your prescriptions, OTC medicines, and daily health essentials online. We deliver authentic medications right to your doorstep.
+            </p>
+            
+            <!-- Medicine Search Bar -->
+            <form action="{% url 'shop' %}" method="GET" style="display: flex; gap: 10px; background: white; padding: 8px; border-radius: 12px; box-shadow: var(--shadow);">
+                <div style="flex: 1; display: flex; align-items: center; padding-left: 15px;">
+                    <i class="fas fa-search" style="color: #94a3b8;"></i>
+                    <input type="text" name="keywords" placeholder="Search for medicines..." style="width: 100%; border: none; padding: 10px; outline: none; font-size: 1rem;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="border-radius: 8px; padding: 12px 25px;">Search</button>
+            </form>
+        </div>
 
-        <h3>{{ product.name }}</h3>
-        <span class="price">GHS {{ product.price }}</span>
-        <button class="btn-outline">Add to Cart</button>
-    </div>
-    {% empty %}
-    <p style="text-align: center;">No products added in Admin panel yet.</p>
-    {% endfor %}
-</div>
-</section>
-
-<!-- Meet the Founder Section -->
-<section class="container" style="padding: 4rem 5%; background: white; margin-bottom: 4rem; border-radius: 20px; box-shadow: var(--shadow);">
-    <div class="grid-3" style="grid-template-columns: 1fr 2fr; align-items: center; gap: 3rem;">
-        <div style="text-align: center;">
-            <div style="position: relative; display: inline-block;">
-                <!-- Morison's Profile Photo -->
-                <img src="{% static 'images/morison.jpg' %}" alt="Morison" style="width: 250px; height: 250px; object-fit: cover; border-radius: 50%; border: 5px solid var(--light); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);">
-                <!-- Verified Badge -->
-                <div style="position: absolute; bottom: 15px; right: 15px; background: var(--primary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white;">
-                    <i class="fas fa-check"></i>
+        <div class="animate-up delay-2" style="position: relative;">
+            <img src="https://images.unsplash.com/photo-1576671081837-49000212a370?auto=format&fit=crop&q=80" alt="Pharmacy" style="width: 100%; border-radius: 24px; box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);">
+            
+            <!-- Floating Trust Badge -->
+            <div class="float-anim" style="position: absolute; bottom: -20px; left: -20px; background: white; padding: 15px 25px; border-radius: 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px;">
+                <div style="background: #ecfdf5; padding: 15px; border-radius: 50%;">
+                    <i class="fas fa-shield-alt" style="color: var(--primary); font-size: 1.5rem;"></i>
+                </div>
+                <div>
+                    <h4 style="color: var(--secondary); margin-bottom: 3px;">FDA Approved</h4>
+                    <p style="color: #64748B; font-size: 0.85rem; margin: 0;">100% Genuine Drugs</p>
                 </div>
             </div>
         </div>
-        <div>
-            <h2 style="font-size: 2rem; margin-bottom: 1rem; color: var(--secondary);">A message from our Founder</h2>
-            <i class="fas fa-quote-left" style="font-size: 2rem; color: #cbd5e1; margin-bottom: 1rem; display: block;"></i>
-            <p style="font-size: 1.15rem; color: #475569; line-height: 1.8; font-style: italic; margin-bottom: 1.5rem;">
-                "At MorisonRx, your health is our ultimate priority. I started this platform to ensure that no one in Ghana has to struggle to find the exact, authentic medications they need. We are committed to delivering care with speed, privacy, and absolute professionalism within Kpandai."
-            </p>
-            <h4 style="font-size: 1.3rem; color: var(--primary-dark);">Morison</h4>
-            <p style="color: var(--accent); font-weight: 600;">Lead Pharmacist & CEO</p>
+
+    </div>
+</header>
+
+<!-- SHOP BY CATEGORY -->
+<section style="padding: 4rem 5%; background: white;">
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <h2 style="font-size: 2.2rem;">Shop by Category</h2>
+        <p style="color: #64748B;">Find exactly what you need quickly.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;">
+        <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+            <i class="fas fa-pills"></i>
+            <h4>Pain Relief</h4>
+        </div>
+        <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+            <i class="fas fa-capsules"></i>
+            <h4>Antibiotics</h4>
+        </div>
+        <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+            <i class="fas fa-first-aid"></i>
+            <h4>First Aid</h4>
+        </div>
+        <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+            <i class="fas fa-heartbeat"></i>
+            <h4>Vitamins</h4>
+        </div>
+        <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+            <i class="fas fa-baby-carriage"></i>
+            <h4>Baby Care</h4>
         </div>
     </div>
 </section>
+
+<!-- FEATURED MEDICINES -->
+<section style="padding: 4rem 5%; background: var(--light);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <span class="badge badge-green" style="margin-bottom: 10px; display: inline-block;">Best Sellers</span>
+            <h2 style="font-size: 2.2rem;">Featured Medicines</h2>
+        </div>
+        <a href="{% url 'shop' %}" class="btn-outline">View All Products <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+    </div>
+
+    <div class="grid-4">
+        {% for product in featured_products %}
+        <div class="card animate-up delay-1" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="height: 200px; object-fit: contain; background: white; padding: 1rem;">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x200?text=Medicine" alt="No Image" style="height: 200px; object-fit: contain;">
+                {% endif %}
+                
+                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--secondary);">{{ product.name }}</h3>
+                <p style="color: #64748B; font-size: 0.9rem; margin-bottom: 1rem;">{{ product.category }}</p>
+            </div>
+            
+            <div>
+                <span class="price" style="font-size: 1.4rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 1rem; display: block;">
+                    GHS {{ product.price }}
+                </span>
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary" style="width: 100%; display: flex; justify-content: center; gap: 10px;">
+                    <i class="fas fa-cart-plus"></i> Add to Cart
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: white; border-radius: 16px;">
+            <i class="fas fa-box-open" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+            <h3>No Medicines Added Yet</h3>
+            <p style="color: #64748b;">Please log in as Admin and add products to the store.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- UPLOAD PRESCRIPTION BANNER -->
+<section class="promo-banner" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+    <div style="position: relative; z-index: 2;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: white;">Have a Doctor's Prescription?</h2>
+        <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; max-width: 500px;">
+            Don't waste time searching. Upload an image of your prescription, and our licensed pharmacists will prepare your order immediately.
+        </p>
+        <button class="btn btn-primary" style="background: white; color: var(--secondary); font-size: 1.1rem; padding: 15px 30px;">
+            <i class="fas fa-upload"></i> Upload Prescription
+        </button>
+    </div>
+    <!-- Decorative Icon -->
+    <i class="fas fa-file-medical-alt" style="font-size: 15rem; color: rgba(255,255,255,0.1); position: absolute; right: 5%; top: -20%;"></i>
+</section>
+
 {% endblock %}
