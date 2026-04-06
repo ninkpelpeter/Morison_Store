@@ -124,9 +124,9 @@ USE_TZ = True
 
 # --- CLOUDINARY CLOUD STORAGE SETTINGS ---
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dbqa7wxtq',
-    'API_KEY': '733812289624898',
-    'API_SECRET': '2S6gHZdUC9zhWdBQxTl3QMAEqE4',
+     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('API_KEY'),
+    'API_SECRET': os.environ.get('API_SECRET'),
 }
 
 STATIC_URL = '/static/'
